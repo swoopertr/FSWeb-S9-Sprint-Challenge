@@ -1,5 +1,13 @@
 const yup = require('yup')
 
+/**
+ * {
+ *    "email":"aaa@aa.com",
+ *    "x":1,
+ *    "y":3,
+ *    "steps": 3
+ * }
+ */
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -23,16 +31,40 @@ const schema = yup.object().shape({
     .number()
     .typeError('steps must be a number')
     .required('steps is required')
-    .min(0, 'steps must be 0 or greater'),
+    .min(0, 'steps must be 0 or greater')
+    .max(2, 'max steps is reached')
 })
-
+let rules = {
+  x: {
+    1:'x coordinate must be a number',
+    2:'x coordinate is required',
+    3: "x coordinate must be 1, 2 or 3",
+    4: "'x coordinate must be 1, 2 or 3'"
+  },
+  y: {
+    1:'y coordinate must be a number',
+    2:'y coordinate is required',
+    3: "y coordinate must be 1, 2 or 3",
+    4: 'y coordinate must be 1, 2 or 3'
+  },
+  steps: {
+    1:'steps must be a number',
+    2:'steps is required',
+    3: " steps coordinate must be 1, 2 or 3",
+    4: 'steps coordinate must be 1, 2 or 3'
+  },
+}
+let emails = ['gultekin@email.com','egemen@email.com','sinan@email.com', 'nebi@email.com', "gokalp@email.com", "tunc@email.com"];
 async function buildResponse(req) {
   let status = 200
   let message
-
   try {
     const validated = await schema.validate(req.body, { stripUnknown: true })
-
+    
+    if (!emails.includes(req.email)) {
+      status = 403
+      throw new Error('Unauthorized email address')
+    }
     const { email, x, y, steps } = validated
     const code = (((x + 1) * (y + 2)) * (steps + 1)) + email.length
 
@@ -50,7 +82,13 @@ async function buildResponse(req) {
 
   return [status, { message }]
 }
+function rand(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 module.exports = {
   buildResponse,
+  emails,
+  rules,
+  rand,
 }
