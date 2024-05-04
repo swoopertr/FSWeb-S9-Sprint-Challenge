@@ -86,9 +86,26 @@ function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function generateGrid(dimensions) {
+  const [rows, cols] = dimensions;
+  const grid = [];
+
+  for (let i = 0; i < rows; i++) {
+    const row = [];
+    for (let j = 0; j < cols; j++) {
+      row.push(0);
+    }
+    grid.push(row);
+  }
+
+  return grid;
+}
+
+
 module.exports = {
   buildResponse,
   emails,
   rules,
   rand,
+  generateGrid
 }

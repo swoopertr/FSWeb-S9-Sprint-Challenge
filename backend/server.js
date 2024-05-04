@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const path = require('path')
 
-const { buildResponse, emails, rules, rand } = require('./helpers')
+const { buildResponse, emails, rules, rand, generateGrid  } = require('./helpers')
 
 const server = express()
 
@@ -37,6 +37,15 @@ server.get('/rules', (req, res) => {
   const randomDimension = rand(3, 7); 
   res.status(200).json({ randomDimension });
 });
+
+// Endpoint to generate grid based on dimensions
+server.get('/generateGrid', (req, res) => {
+  const { rows, cols } = req.query;
+  const dimensions = [parseInt(rows), parseInt(cols)]; // Parse rows and cols to integers
+  const grid = generateGrid(dimensions);
+  res.status(200).json({ grid });
+});
+
 
 server.use((req, res) => {
   res.status(404).json({
