@@ -34,8 +34,12 @@ server.get('/rules', (req, res) => {
  
  // todo: /randDimention [3, 7] 
  server.get('/randDimension', (req, res) => {
-  const randomDimension = rand(3, 7); 
-  res.status(200).json({ randomDimension });
+  const randomDimensionRows = rand(3, 10); 
+  const randomDimensionCols = rand(3, 10); 
+  res.status(200).json({ 
+    rows: randomDimensionRows,
+    cols: randomDimensionCols  
+  });
 });
 
 // Endpoint to generate grid based on dimensions

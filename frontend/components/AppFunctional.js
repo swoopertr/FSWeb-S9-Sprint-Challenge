@@ -4,52 +4,39 @@ import { useState, useEffect } from "react";
 const initialMessage = "";
 const initialEmail = "";
 const initialSteps = 0;
-const initialIndex = 4; //  "B" nin bulunduğu indexi
 
 export default function AppFunctional(props) {
   // AŞAĞIDAKİ HELPERLAR SADECE ÖNERİDİR.
   // Bunları silip kendi mantığınızla sıfırdan geliştirebilirsiniz.
   //const [currentIndex, setcurrentIndex]=useState(4);
-
   const [message, setMessage] = useState(initialMessage);
   const [email, setEmail] = useState(initialEmail);
   const [steps, setSteps] = useState(initialSteps);
-  const [currentIndex, setcurrentIndex] = useState(initialIndex);
-  const [grid, setGrid] = useState([]); // Grid geberation için gerekli olan state bu canım
+  const [currentIndex, setcurrentIndex] = useState(0);
+  const [grid, setGrid] = useState([]); // Grid generation için gerekli olan state bu canım
+
+  function initialIndexGenerator() {}
 
   function getXY() {
     // Koordinatları izlemek için bir state e sahip olmak gerekli değildir.
     // Bunları hesaplayabilmek için "B" nin hangi indexte olduğunu bilmek yeterlidir.
-
-    let matrix = [
-      //[col, row]
-      [1, 1],
-      [2, 1],
-      [3, 1],
-      [1, 2],
-      [2, 2],
-      [3, 2],
-      [1, 3],
-      [2, 3],
-      [3, 3],
-    ];
-    let divArray = Array.from(document.querySelectorAll("#grid div"));
-    for (let i = 0; i < divArray.length; i++) {
-      let currentItem = divArray[i];
-      if (currentItem.textContent === "B") {
-        let x = matrix[i][1];
-        let y = matrix[i][0];
-        return { y, x };
-      }
+    let currentRowIndex = -1;
+    let currentColIndex = -1;
+    let colCount = grid[0].length
+    console.log('grid : ', grid);
+    if (currentIndex % colCount == 0) {
+      currentRowIndex = currentIndex / colCount - 1;
+      currentColIndex = colCount - 1;
+    } else {
+      currentRowIndex = Math.floor(currentIndex / colCount);
+      currentColIndex = (currentIndex % colCount) - 1;
     }
-
-    // const x = currentIndex % 3 + 1
-    // const y = Math.floor(currentIndex / 3) + 1
-    // return { x, y }
+    return {currentColIndex, currentRowIndex}
   }
 
   function getIndexFromXY({ y, x }) {
-    return (x - 1) * 3 + y - 1;
+    let colCount = grid[0].length
+    return (x - 1) * colCount + y - 1;
   }
 
   function getXYMesaj() {
@@ -66,7 +53,7 @@ export default function AppFunctional(props) {
     setMessage("");
     setEmail("");
     setSteps(0);
-    setcurrentIndex(4);
+    setcurrentIndex(initialIndex);
   }
 
   function sonrakiIndex(yon) {
@@ -74,6 +61,10 @@ export default function AppFunctional(props) {
     // Gridin kenarına ulaşıldığında başka gidecek yer olmadığı için,
     // şu anki indeksi değiştirmemeli.
     let coordinates = getXY();
+    //todo:...
+    let colCount = grid[0].length;
+    let rowCount = grid.length;
+
     if (yon === "left") {
       if (coordinates.y === 1) {
         setMessage("Sola gidemezsin");
@@ -82,7 +73,7 @@ export default function AppFunctional(props) {
         setcurrentIndex(getIndexFromXY(coordinates));
       }
     } else if (yon === "right") {
-      if (coordinates.y === 3) {
+      if (coordinates.y === colCount) {
         setMessage("Sağa gidemezsin");
       } else {
         coordinates.y = coordinates.y + 1;
@@ -96,7 +87,7 @@ export default function AppFunctional(props) {
         setcurrentIndex(getIndexFromXY(coordinates));
       }
     } else if (yon === "down") {
-      if (coordinates.x === 3) {
+      if (coordinates.x === rowCount) {
         setMessage("Asagi gidemezsin");
       } else {
         coordinates.x = coordinates.x + 1;
@@ -125,7 +116,7 @@ export default function AppFunctional(props) {
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
     let coordinates = getXY();
 
-    fetch("https://localhost:9000/api/result", {
+    fetch("http://localhost:9000/api/result", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -148,12 +139,12 @@ export default function AppFunctional(props) {
 
   useEffect(() => {
     //  random dimensions'ı Fetchleyelim from the backend
-    fetch("https://localhost:9000/randDimension")
+    fetch("http://localhost:9000/randDimension")
       .then((response) => response.json())
       .then((data) => {
-        const { randomDimension } = data;
+        const { rows, cols } = data;
         //  Grid'i random dimensions ile oluşturalım
-        generateGrid(randomDimension);
+        generateGrid(data);
       })
       .catch((error) =>
         console.error("Error fetching random dimensions:", error)
@@ -163,12 +154,14 @@ export default function AppFunctional(props) {
   function generateGrid(dimensions) {
     // Fetch grid data from backend based on the dimensions
     fetch(
-      `https://localhost:9000/generateGrid?rows=${dimensions}&cols=${dimensions}`
+      `http://localhost:9000/generateGrid?rows=${dimensions.rows}&cols=${dimensions.cols}`
     )
       .then((response) => response.json())
       .then((data) => {
         // Set the generated grid in state
-        setGrid(data.grid);
+
+        setGrid(data.grid.grid);
+        setcurrentIndex(data.grid.initalIndex);
       })
       .catch((error) => console.error("Error fetching grid data:", error));
   }
@@ -179,25 +172,20 @@ export default function AppFunctional(props) {
         <h3 id="coordinates">Koordinatlar (2, 2)</h3>
         <h3 id="steps">0 kere ilerlediniz</h3>
       </div>
-      {/* Burayı fonksyionlar çalışsın diye güncellemek gerek
-       <div id="grid">
-        {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
-            </div>
-          ))
-        }
-      </div> */}
+      <div>{currentIndex}</div>
       <div id="grid">
         {grid.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
             {row.map((cell, colIndex) => (
               <div
                 key={colIndex}
-                className={`square${cell === "B" ? " active" : ""}`}
+                className={`square${(getIndexFromXY({y:colIndex+1, x: rowIndex+1}) == currentIndex) ? " active" : ""}`}
               >
-                {cell}
+                {
+                  (getIndexFromXY({y:colIndex+1, x: rowIndex+1}) == currentIndex) ? 'B': '0'
+                }
+                 
+                
               </div>
             ))}
           </div>
@@ -208,11 +196,21 @@ export default function AppFunctional(props) {
         <h3 id="message"></h3>
       </div>
       <div id="keypad">
-        <button id="left">SOL</button>
-        <button id="up">YUKARI</button>
-        <button id="right">SAĞ</button>
-        <button id="down">AŞAĞI</button>
-        <button id="reset">reset</button>
+        <button onClick={ilerle} id="left">
+          SOL
+        </button>
+        <button onClick={ilerle} id="up">
+          YUKARI
+        </button>
+        <button onClick={ilerle} id="right">
+          SAĞ
+        </button>
+        <button onClick={ilerle} id="down">
+          AŞAĞI
+        </button>
+        <button onClick={ilerle} id="reset">
+          reset
+        </button>
       </div>
       <form>
         <input id="email" type="email" placeholder="email girin"></input>

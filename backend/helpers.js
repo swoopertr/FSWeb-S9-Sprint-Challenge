@@ -89,16 +89,33 @@ function rand(min, max) {
 function generateGrid(dimensions) {
   const [rows, cols] = dimensions;
   const grid = [];
-
+  const gridLen = rows * cols; // 5,7
+  const initalIndex = rand(1,gridLen); //33 - 4,2
+  const tresureIndex = rand(1,gridLen); //33 - 4,2
+  //todo: düşünün
+  let findRowIndex = -1;
+  let findColIndex = -1;
+  if(initalIndex % cols == 0){
+    findRowIndex = (initalIndex / cols) -1;
+    findColIndex = cols -1;
+  }else{
+    findRowIndex = Math.floor(initalIndex / cols);
+    findColIndex = initalIndex % cols - 1;
+  }
+  
   for (let i = 0; i < rows; i++) {
     const row = [];
     for (let j = 0; j < cols; j++) {
-      row.push(0);
+      if (i === findRowIndex && j === findColIndex) {
+        row.push("B");
+      } else {
+        row.push(0);
+      }
     }
     grid.push(row);
   }
 
-  return grid;
+  return {grid, initalIndex, tresureIndex};
 }
 
 
