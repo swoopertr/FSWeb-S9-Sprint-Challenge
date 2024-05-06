@@ -21,14 +21,14 @@ server.get('/users', (req, res) => {
    res.status(200).json([...emails])
   //res.sendFile(path.join(__dirname, '../dist/index.html'))
 })
-
+//jwjwkjjhdkjbdkjjejj
 
 server.get('/rules', (req, res) => {
   res.status(200).json(rules)
 })
  // todo: path : '/rand' [0, 8] random number generate
  server.get('/rand', (req, res) => {
-  const randomNumber = rand(0, 8); 
+  const randomNumber = rand(2, 8); 
   res.status(200).json({ randomNumber });
 });
  

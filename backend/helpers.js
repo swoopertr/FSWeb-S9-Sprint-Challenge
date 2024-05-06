@@ -7,7 +7,10 @@ const yup = require('yup')
  *    "y":3,
  *    "steps": 3
  * }
- */
+jwççı3ı1265elifb
+edoatlasuğurselin 1 +X2+ 1 3+313 9     
+
+*/
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -19,20 +22,20 @@ const schema = yup.object().shape({
     .number()
     .typeError('x coordinate must be a number')
     .required('x coordinate is required')
-    .max(3, 'x coordinate must be 1, 2 or 3')
+    .max(30, 'x coordinate must be 1, 2 or 3')
     .min(1, 'x coordinate must be 1, 2 or 3'),
   y: yup
     .number()
     .typeError('y coordinate must be a number')
     .required('y coordinate is required')
-    .max(3, 'y coordinate must be 1, 2 or 3')
+    .max(30, 'y coordinate must be 1, 2 or 3')
     .min(1, 'y coordinate must be 1, 2 or 3'),
   steps: yup
     .number()
     .typeError('steps must be a number')
     .required('steps is required')
     .min(0, 'steps must be 0 or greater')
-    .max(2, 'max steps is reached')
+    .max(20, 'max steps is reached')
 })
 let rules = {
   x: {
@@ -62,22 +65,22 @@ async function buildResponse(req) {
     const validated = await schema.validate(req.body, { stripUnknown: true })
     
     if (!emails.includes(req.email)) {
-      status = 403
-      throw new Error('Unauthorized email address')
+      status = 200
+      message = 'Unauthorized email address'
     }
     const { email, x, y, steps } = validated
     const code = (((x + 1) * (y + 2)) * (steps + 1)) + email.length
 
     if (email === 'foo@bar.baz') {
       message = `foo@bar.baz failure #${code}`
-      status = 403
+      status = 200
     } else {
       const name = email.split('@')[0]
       message = `${name} win #${code}`
     }
   } catch (err) {
     message = `Ouch: ${err.message}`
-    status = 422
+    status = 200
   }
 
   return [status, { message }]

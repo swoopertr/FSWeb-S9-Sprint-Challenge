@@ -79,8 +79,8 @@ nav a.active:nth-last-of-type(2) {
 
 #grid {
   display: grid;
-  grid-template-columns: 100px 100px 100px;
-  grid-template-rows: 100px 100px 100px;
+  /*grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;*/
 }
 
 #grid .square {
