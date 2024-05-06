@@ -164,16 +164,12 @@ export default function AppFunctional(props) {
   }
   function onKeyDown(evt) {
     if(evt.key === "ArrowRight") {
-      //sonrakiIndex("right");
       document.getElementById('right').click();
     } else if(evt.key === "ArrowLeft") {
-      //sonrakiIndex("left");
       document.getElementById('left').click();
     } else if(evt.key === "ArrowUp") {
-      //sonrakiIndex("up");
       document.getElementById('up').click();
     } else if(evt.key === "ArrowDown") {
-      //sonrakiIndex("down");
       document.getElementById('down').click();
     }
   }

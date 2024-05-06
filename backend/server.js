@@ -21,7 +21,6 @@ server.get('/users', (req, res) => {
    res.status(200).json([...emails])
   //res.sendFile(path.join(__dirname, '../dist/index.html'))
 })
-//jwjwkjjhdkjbdkjjejj
 
 server.get('/rules', (req, res) => {
   res.status(200).json(rules)
@@ -36,7 +35,13 @@ server.get('/rules', (req, res) => {
  server.get('/randDimension', (req, res) => {
   const rows = rand(3, 10); 
   const cols = rand(3, 10); 
-  res.status(200).json({ rows, cols });
+  
+  const treasureRandom = rand(1, rows*cols) 
+
+  res.status(200).json({ 
+    rows, 
+    cols, 
+    tresureIndex: treasureRandom - 1});
 });
 
 server.use((req, res) => {

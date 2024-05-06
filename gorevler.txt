@@ -1,0 +1,13 @@
+yapılacaklar: bunların hepsi nonSquare branch'te yapılacak.
+* reset düzeltilecek: useEffect'teki fetch gibi random yeni bir grid tetiklenecek => Sinan
+
+* deneme hakkı verilecek backendden. boyuta göre mantıklı bir deneme hakkı olsun.
+        treasure index frontend'e gitmeyecek saklı olacak => Ego
+* üsttekine göre artık her yön değiştiğinde post request gönderilmeli => Sinan
+
+* treasure bulunduğunda css ile kutlama yapılacak => gönüllü çıkmazsa Sinan
+
+* B yerine hazine avcısı ikon'u yazdırılacak => gönüllü çıkmazsa Ego
+
+** bonus : 1 den fazla hazine olursa nasıl yapılır 
+** bonus : oyunlara ayırmak istediğimizde nasıl yapılır.
