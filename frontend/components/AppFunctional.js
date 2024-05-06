@@ -17,7 +17,7 @@ export default function AppFunctional(props) {
   const [steps, setSteps]=useState(initialSteps);
   const [currentIndex, setcurrentIndex]=useState(initialIndex);
   const [coordinates, setCoordinates] = useState({});
-  const [dimention, setDimention] = useState(4);
+  const [dimention, setDimention] = useState({rows:3,cols:5});
 
   useEffect(()=>{
     
@@ -28,11 +28,11 @@ export default function AppFunctional(props) {
           "Content-Type": "application/json",
            },
       };
-      const result = await fetch("https://24mzwmm3-9000.euw.devtunnels.ms/rand", requestObj);
+      const result = await fetch("https://24mzwmm3-9000.euw.devtunnels.ms/randDimension", requestObj);
       const resultJson = await result.json();
-      console.log(resultJson.randomNumber);
-      setDimention(resultJson.randomNumber)
-      const rand = Math.floor(Math.random()*Math.pow(resultJson.randomNumber, 2));
+      console.log(resultJson);
+      setDimention(resultJson)
+      const rand = Math.floor(Math.random() * resultJson.rows * resultJson.cols);
       setcurrentIndex(rand);
     }
 
@@ -58,13 +58,13 @@ export default function AppFunctional(props) {
 
 
   function getXY() {
-    const y = currentIndex % dimention + 1
-    const x = Math.floor(currentIndex / dimention) + 1
+    const y = currentIndex % dimention.cols + 1
+    const x = Math.floor(currentIndex / dimention.cols) + 1
     return { y, x }
   }
 
   function getIndexFromXY ({y, x}) {
-    const result = (((x-1) * dimention + y) - 1 );
+    const result = (((x-1) * dimention.cols + y) - 1 );
     return result;
   }
 
@@ -93,7 +93,7 @@ export default function AppFunctional(props) {
         setSteps(steps+1);
       }
     } else if (yon === "right"){
-      if(coordinates_.y === dimention){
+      if(coordinates_.y === dimention.cols){
         setMessage("Sağa gidemezsin")
       } else {
         coordinates_.y = coordinates_.y + 1;
@@ -111,7 +111,7 @@ export default function AppFunctional(props) {
         setSteps(steps+1);
       }
     } else if (yon === "down") {
-      if (coordinates_.x === dimention){
+      if (coordinates_.x === dimention.rows){
         setMessage("Asagi gidemezsin")
       }else{
         coordinates_.x = coordinates_.x + 1
@@ -182,17 +182,17 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h4>currentIndex : {currentIndex}</h4>
-        <h3 id="coordinates">Koordinatlar {`(${Math.floor(currentIndex / dimention) + 1} , ${currentIndex % dimention + 1})`}</h3>
+        <h3 id="coordinates">Koordinatlar {`(${Math.floor(currentIndex / dimention.cols) + 1} , ${currentIndex % dimention.cols + 1})`}</h3>
         <h3 id="steps">{steps} kere ilerlediniz</h3>
       </div>
       <div id="grid" style={
         {
-          gridTemplateColumns: [...Array(dimention).keys()].map(x => "100px").join(" "),
-          gridTemplateRows: [...Array(dimention).keys()].map(x => "100px").join(" ")
+          gridTemplateColumns: [...Array(dimention.cols).keys()].map(x => "100px").join(" "),
+          gridTemplateRows: [...Array(dimention.rows).keys()].map(x => "100px").join(" ")
         }
       } >
         {
-          [...Array(dimention * dimention).keys()].map(idx => (
+          [...Array(dimention.rows * dimention.cols).keys()].map(idx => (
             <div key={idx} className={`square${idx === currentIndex ? ' active' : ''}`}>
               {idx === currentIndex ? 'B' : null}
             </div>

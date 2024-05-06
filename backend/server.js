@@ -34,8 +34,9 @@ server.get('/rules', (req, res) => {
  
  // todo: /randDimention [3, 7] 
  server.get('/randDimension', (req, res) => {
-  const randomDimension = rand(3, 7); 
-  res.status(200).json({ randomDimension });
+  const rows = rand(3, 10); 
+  const cols = rand(3, 10); 
+  res.status(200).json({ rows, cols });
 });
 
 server.use((req, res) => {
