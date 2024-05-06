@@ -205,7 +205,7 @@ export default function AppFunctional(props) {
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
     let coordinates = getXY();
 
-    fetch("http://localhost:9000/api/result", {
+    fetch("https://24mzwmm3-9000.euw.devtunnels.ms//api/result", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -228,7 +228,7 @@ export default function AppFunctional(props) {
 
   useEffect(() => {
     //  random dimensions'ı Fetchleyelim from the backend
-    fetch("http://localhost:9000/randDimension")
+    fetch("https://24mzwmm3-9000.euw.devtunnels.ms/randDimension")
       .then((response) => response.json())
       .then((data) => {
         const { rows, cols } = data;
@@ -243,7 +243,7 @@ export default function AppFunctional(props) {
   function generateGrid(dimensions) {
     // Fetch grid data from backend based on the dimensions
     fetch(
-      `http://localhost:9000/generateGrid?rows=${dimensions.rows}&cols=${dimensions.cols}`
+      `https://24mzwmm3-9000.euw.devtunnels.ms/generateGrid?rows=${dimensions.rows}&cols=${dimensions.cols}`
     )
       .then((response) => response.json())
       .then((data) => {
