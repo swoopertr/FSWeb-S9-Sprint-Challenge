@@ -28,14 +28,14 @@ server.get('/rules', (req, res) => {
 })
  // todo: path : '/rand' [0, 8] random number generate
  server.get('/rand', (req, res) => {
-  const randomNumber = rand(0, 8); 
+  const randomNumber = rand(0, 5); 
   res.status(200).json({ randomNumber });
 });
  
  // todo: /randDimention [3, 7] 
  server.get('/randDimension', (req, res) => {
-  const randomDimensionRows = rand(3, 10); 
-  const randomDimensionCols = rand(3, 10); 
+  const randomDimensionRows = rand(3, 4); 
+  const randomDimensionCols = rand(3, 4); 
   res.status(200).json({ 
     rows: randomDimensionRows,
     cols: randomDimensionCols  

@@ -137,19 +137,19 @@ button#reset {
 }
 
 button#left {
-  grid-area: left;
+  grid-area: up-start;
 }
 
 button#up {
-  grid-area: up;
+  grid-area: left;
 }
 
 button#right {
-  grid-area: right;
+  grid-area: down;
 }
 
 button#down {
-  grid-area: down;
+  grid-area: right;
 }
 
 input {
