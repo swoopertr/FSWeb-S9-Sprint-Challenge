@@ -7,7 +7,7 @@ yapılacaklar: bunların hepsi nonSquare branch'te yapılacak.
 
 * üsttekine göre artık her yön değiştiğinde post request gönderilmeli => Sinan: tamamlandı ama yorumlu halde.
 
-* treasure bulunduğunda css ile kutlama yapılacak => gönüllü çıkmazsa Sinan
+* treasure bulunduğunda css ile kutlama yapılacak => gönüllü çıkmazsa Sinan: tamamlandı
 
 * B yerine hazine avcısı ikon'u yazdırılacak => gönüllü çıkmazsa Ego
 

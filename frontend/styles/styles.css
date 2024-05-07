@@ -179,3 +179,24 @@ footer {
   text-align: center;
   color: #93005a;
 }
+
+ 
+/* bundan aşağısı şuradan çalıntıdır: regards;
+https://codepen.io/jonathanbell/pen/OvYVYw */
+.special-h1 {
+  position: absolute;
+  margin-top: 30vh;
+  width: 100%;
+  text-align: center;
+  font-size: 333%;
+  font-family: sans-serif;
+  color: grey;
+  opacity: 0.5;
+}
+
+canvas {
+  overflow-y: hidden;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+}
