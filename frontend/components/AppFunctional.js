@@ -89,7 +89,6 @@ export default function AppFunctional(props) {
         const tempIndex = getIndexFromXY(coordinates_);
         setcurrentIndex(tempIndex);
         setSteps(steps + 1);
-        gameWon()
 
         // backend yazılıcınca bunun comment'i kaldırılabilir.
         // checkTreasury()
@@ -198,6 +197,8 @@ export default function AppFunctional(props) {
 
     if (result) {
       //burada kutlama fonksiyonu çağırılabilir
+      gameWon();
+      return true;
 
     } else {
       return result;
