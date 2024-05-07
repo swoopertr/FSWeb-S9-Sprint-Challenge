@@ -21,20 +21,7 @@ export default function AppFunctional(props) {
 
   useEffect(()=>{
     
-    const getRandFromBackend =async ()=>{
-      let requestObj = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-           },
-      };
-      const result = await fetch("https://24mzwmm3-9000.euw.devtunnels.ms/randDimension", requestObj);
-      const resultJson = await result.json();
-      console.log(resultJson);
-      setDimention(resultJson)
-      const rand = Math.floor(Math.random() * resultJson.rows * resultJson.cols);
-      setcurrentIndex(rand);
-    }
+    
 
     getRandFromBackend();
     
@@ -50,12 +37,23 @@ export default function AppFunctional(props) {
     setMessage('');
     setEmail('');
     setSteps(0);
-    let randDimension = 2 + Math.ceil(Math.random()*5);
-    setDimention(randDimension)
-    const rand = Math.floor(Math.random()*Math.pow(randDimension,2));
-    setcurrentIndex(rand);
+    getRandFromBackend()
   }
 
+  const getRandFromBackend = async ()=>{
+    let requestObj = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+         },
+    };
+    const result = await fetch("http://localhost:9000/randDimension", requestObj);
+    const resultJson = await result.json();
+    console.log(resultJson);
+    setDimention(resultJson)
+    const rand = Math.floor(Math.random() * resultJson.rows * resultJson.cols);
+    setcurrentIndex(rand);
+  }
 
   function getXY() {
     const y = currentIndex % dimention.cols + 1
@@ -91,6 +89,9 @@ export default function AppFunctional(props) {
         const tempIndex = getIndexFromXY(coordinates_);
         setcurrentIndex(tempIndex);
         setSteps(steps+1);
+       
+        // backend yazılıcınca bunun comment'i kaldırılabilir.
+        // checkTreasury()
       }
     } else if (yon === "right"){
       if(coordinates_.y === dimention.cols){
@@ -100,6 +101,8 @@ export default function AppFunctional(props) {
         const tempIndex = getIndexFromXY(coordinates_);
         setcurrentIndex(tempIndex);
         setSteps(steps+1);
+        // backend yazılıcınca bunun comment'i kaldırılabilir.
+        // checkTreasury()
       }
     } else if (yon === "up"){
       if(coordinates_.x === 1){
@@ -109,6 +112,8 @@ export default function AppFunctional(props) {
         const tempIndex = getIndexFromXY(coordinates_);
         setcurrentIndex(tempIndex);
         setSteps(steps+1);
+        // backend yazılıcınca bunun comment'i kaldırılabilir.
+        // checkTreasury()
       }
     } else if (yon === "down") {
       if (coordinates_.x === dimention.rows){
@@ -118,6 +123,8 @@ export default function AppFunctional(props) {
         const tempIndex = getIndexFromXY(coordinates_);
         setcurrentIndex(tempIndex);
         setSteps(steps+1);
+        // backend yazılıcınca bunun comment'i kaldırılabilir.
+        // checkTreasury()
       }
     } else if (yon === "reset") {
       // yon değil ama reset id'si gelince reset'lesin diye bu formüle ekledik.
@@ -173,6 +180,31 @@ export default function AppFunctional(props) {
       document.getElementById('down').click();
     }
   }
+  async function checkTreasury(index) {
+    
+    // backende POST request ile index gönderiyoruz.
+    // gönderdiğimiz index backend'dekiyle örtüşürse oyunu bitir ve kutla, değilse false dön.
+    let requestObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+         },
+      body: JSON.stringify({
+        treasuryIndex: index
+      }),
+    };
+    const result = await fetch("http://localhost:9000/api/result", requestObj);
+    
+    if (result) {
+      //burada kutlama fonksiyonu çağırılabilir
+
+    } else {
+      return result;
+    }
+
+  }
+
+  
 
   return (
     <div id="wrapper" className={props.className}>
