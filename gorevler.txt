@@ -2,7 +2,8 @@ yapılacaklar: bunların hepsi nonSquare branch'te yapılacak.
 * reset düzeltilecek: useEffect'teki fetch gibi random yeni bir grid tetiklenecek => Sinan: tamamlandı
 
 * deneme hakkı verilecek backendden. boyuta göre mantıklı bir deneme hakkı olsun.
-        treasure index frontend'e gitmeyecek saklı olacak => Ego
+        treasure index frontend'e gitmeyecek saklı olacak => Ego: Yapıldı **Indexten hareket edince logic'e giriyor.
+        Tekrar bakılacak. Backend log statementlarını bulamadım onu çözünce koordinattan min adımı da yapıcam (Math.abs if you want to check).
         Sinan: kanki AppFunctional.js'de checkTreasuery fonksiyonuna bakabilirsin. kafana göre ayarla backend'i.
 
 * üsttekine göre artık her yön değiştiğinde post request gönderilmeli => Sinan: tamamlandı ama yorumlu halde.
