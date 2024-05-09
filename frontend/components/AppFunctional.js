@@ -18,7 +18,7 @@ export default function AppFunctional(props) {
   const [currentIndex, setcurrentIndex] = useState(initialIndex);
   const [coordinates, setCoordinates] = useState({});
   const [dimention, setDimention] = useState({ rows: 3, cols: 5 });
-
+  const [maxsteps, setmaxSteps] = useState(0)
   useEffect(() => {
     getRandFromBackend();
 
@@ -52,6 +52,7 @@ export default function AppFunctional(props) {
     setDimention(resultJson);
     const rand = Math.floor(Math.random() * resultJson.rows * resultJson.cols);
     setcurrentIndex(rand);
+    setmaxSteps(resultJson.maxSteps);
   };
 
   function getXY() {
@@ -183,6 +184,7 @@ export default function AppFunctional(props) {
         },
         body: JSON.stringify({
           currentIndex: currentIndex,
+          StepsTaken: steps
         }),
       });
 
@@ -341,7 +343,9 @@ export default function AppFunctional(props) {
             (currentIndex % dimention.cols) + 1
           })`}
         </h3>
+        <h3>MaxSteps:{maxsteps}</h3>
         <h3 id="steps">{steps} kere ilerlediniz</h3>
+        <h3>Kalan Adımlar: {maxsteps - steps}</h3>
       </div>
       <canvas id="canvas" style={{ display: "none" }}></canvas>
       <div

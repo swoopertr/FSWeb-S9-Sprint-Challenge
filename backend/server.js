@@ -31,30 +31,32 @@ server.get("/rand", (req, res) => {
   res.status(200).json({ randomNumber });
 });
 
+let TreasureIndex = -1
+let maxSteps = -1
 // todo: /randDimention [3, 7]
 server.get("/randDimension", (req, res) => {
-  const rows = rand(3, 10);
-  const cols = rand(3, 10);
+  const rows = rand(3, 5);
+  const cols = rand(3, 5);
 
   const treasureRandom = rand(1, rows * cols);
-
+  TreasureIndex = treasureRandom -1
+  console.log(TreasureIndex)
+  maxSteps = Math.floor(rows * cols / 2) // temp Algo. Will be developed further. 
   res.status(200).json({
     rows,
     cols,
-    tresureIndex: treasureRandom - 1,
+    maxSteps
   });
 });
 
+
 server.post("/checkTreasury", async (req, res) => {
-  const { currentIndex } = req.body;
+  const { currentIndex, StepsTaken } = req.body;
 
   try {
-    const response = await fetch("http://localhost:9000/randDimension");
-    const { tresureIndex } = await response.json();
 
-    const reachedTreasure = currentIndex === tresureIndex;
-
-    if (reachedTreasure) {
+    if (currentIndex === TreasureIndex && StepsTaken <=maxSteps) {
+      console.log("treausre hit!")
       res.json({
         reachedTreasure: true,
         message: "Congratulations! You found the treasure!",
